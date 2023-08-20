@@ -26,7 +26,7 @@ typedef struct {
 
 // Funciones para el objeto Envio
 void Envio_init(Envio *);
-
+void Envio_copiar(Envio *,Envio *);
 
 
 #endif // ENVIO_H
