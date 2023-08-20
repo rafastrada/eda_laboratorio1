@@ -34,10 +34,14 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="include/Envio.h" />
+		<Unit filename="include/ListaSO.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/Envio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/ListaSO.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

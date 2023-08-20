@@ -28,5 +28,4 @@ typedef struct {
 void Envio_init(Envio *);
 void Envio_copiar(Envio *,Envio *);
 
-
 #endif // ENVIO_H
