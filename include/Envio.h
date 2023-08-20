@@ -27,18 +27,6 @@ typedef struct {
 // Funciones para el objeto Envio
 void Envio_init(Envio *);
 
-// --- Funciones OBSERVADORAS
-char* Envio_get_codigo_envio(Envio *);
-unsigned int Envio_get_dni_receptor(Envio *);
-char* Envio_get_nombre_apellido_receptor(Envio *);
-char* Envio_get_domicilio_receptor(Envio *);
-unsigned int Envio_get_dni_remitente(Envio *);
-char* Envio_get_nombre_apellido_remitente(Envio *);
-char* Envio_get_fecha_envio(Envio *);
-char* Envio_get_fecha_recepcion(Envio *);
-
-
-// --- Funciones MODIFICADORAS
 
 
 #endif // ENVIO_H
