@@ -1,5 +1,8 @@
 #include "ListaSO.h"
 
+void Lista_init(Lista *lista) {
+    lista->limite_superior = -1;
+}
 
 int Lista_localizar(Lista *lista,char codigo_envio[], Lista_localizar_retornos *exito) {
     // Busca en 'lista' el elemento con el campo 'codigo_envio',
@@ -62,4 +65,21 @@ int Lista_alta(Lista *lista, Envio nuevo) {
     else salida = ERROR_CODIGO_EXISTENTE;
 
     return salida;
+}
+
+
+int Lista_baja(Lista *lista,char codigo_envio) {
+
+    int posicion;
+    Lista_localizar_retornos exito_localizar;
+
+    // Se captura el resultado de la localizacion y su respectiva
+    // posicion para 'codigo_envio'
+    posicion = Lista_localizar(lista,codigo_envio,&exito_localizar);
+
+    if (exito_localizar == LOCALIZACION_EXITOSA) {
+        for (int i=posicion; i<)
+    }
+
+    else return 0;
 }
