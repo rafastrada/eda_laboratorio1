@@ -5,7 +5,7 @@
 #define ENVIO_TAM_CODIGO_DE_ENVIO 10
 #define ENVIO_TAM_NOMBRE_APELLIDO 50
 #define ENVIO_TAM_DOMICILIO 50
-#define ENVIO_TAM_FECHA 10
+#define ENVIO_TAM_FECHA 12
 
 // Limites de algunos campos
 #define ENVIO_DNI_MINIMO 1000000
@@ -36,5 +36,9 @@ unsigned int Envio_get_dni_remitente(Envio *);
 char* Envio_get_nombre_apellido_remitente(Envio *);
 char* Envio_get_fecha_envio(Envio *);
 char* Envio_get_fecha_recepcion(Envio *);
+
+
+// --- Funciones MODIFICADORAS
+
 
 #endif // ENVIO_H

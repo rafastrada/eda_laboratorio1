@@ -1,5 +1,12 @@
 # depslib dependency file v1.0
-1692476439 source:c:\users\guillermo\codeblocks\eda_laboratorio1\main.c
+1692548640 source:c:\users\guillermo\codeblocks\eda_laboratorio1\main.c
 	<stdio.h>
 	<stdlib.h>
+	"Envio.h"
+
+1692548619 source:c:\users\guillermo\codeblocks\eda_laboratorio1\src\envio.c
+	"Envio.h"
+	<string.h>
+
+1692548708 c:\users\guillermo\codeblocks\eda_laboratorio1\include\envio.h
 
