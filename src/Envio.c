@@ -15,44 +15,14 @@ void Envio_init(Envio *envio) {
     strcpy(envio->nombre_apellido_remitente,"");
 }
 
-// OBSERVADORES
-// ------------------------------------------------------
-char* Envio_get_codigo_envio(Envio *envio) {
-    // Devuelve el campo CODIGO DE ENVIO
-    return envio->codigo_envio;
-}
-
-unsigned int Envio_get_dni_receptor(Envio *envio) {
-    // Devuelve el campo DNI del RECEPTOR
-    return envio->dni_receptor;
-}
-
-char* Envio_get_nombre_apellido_receptor(Envio *envio) {
-    // Devuelve el campo NOMBRE y APELLIDO del RECEPTOR
-    return envio->nombre_apellido_receptor;
-}
-
-char* Envio_get_domicilio_receptor(Envio *envio) {
-    // Devuelve el campo DOMICILIO del RECEPTOR
-    return envio->domicilio_receptor;
-}
-
-unsigned int Envio_get_dni_remitente(Envio *envio) {
-    // Devuelve el campo DNI del REMITENTE
-    return envio->dni_remitente;
-}
-
-char* Envio_get_nombre_apellido_remitente(Envio *envio) {
-    // Devuelve el campo NOMBRE y APELLIDO del REMITENTE
-    return envio->nombre_apellido_remitente;
-}
-
-char* Envio_get_fecha_envio(Envio *envio) {
-    // Devuelve el campo FECHA de ENVIO
-    return envio->fecha_envio;
-}
-
-char* Envio_get_fecha_recepcion(Envio *envio) {
-    // Devuelve el campo FECHA de RECEPCION
-    return envio->fecha_recepcion;
+void Envio_copiar(Envio *origen,Envio *destino) {
+    // Copia los campos de ORIGEN a DESTINO
+    strcpy(destino->codigo_envio,origen->codigo_envio);
+    destino->dni_receptor = origen->dni_receptor;
+    strcpy(destino->nombre_apellido_receptor,origen->nombre_apellido_receptor);
+    strcpy(destino->domicilio_receptor,origen->domicilio_receptor);
+    destino->dni_remitente = origen->dni_remitente;
+    strcpy(destino->nombre_apellido_remitente,origen->nombre_apellido_remitente);
+    strcpy(destino->fecha_envio,origen->fecha_envio);
+    strcpy(destino->fecha_recepcion,origen->fecha_recepcion);
 }
