@@ -7,6 +7,10 @@
 #define ENVIO_TAM_DOMICILIO 50
 #define ENVIO_TAM_FECHA 10
 
+// Limites de algunos campos
+#define ENVIO_DNI_MINIMO 1000000
+#define ENVIO_FECHA_MINIMA "2000-01-01"
+
 
 // Definicion de objeto Envio
 typedef struct {
@@ -21,6 +25,6 @@ typedef struct {
 } Envio;
 
 // Funciones para el objeto Envio
-
+void Envio_init(Envio *);
 
 #endif // ENVIO_H
