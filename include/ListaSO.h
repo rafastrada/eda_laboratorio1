@@ -7,6 +7,7 @@
 #define LISTA_TAM_ARREGLO 300
 
 // Definicion de la lista
+// (el orden de la lista es CRECIENTE)
 typedef struct {
     Envio arreglo[LISTA_TAM_ARREGLO];
 
@@ -17,7 +18,12 @@ typedef struct {
 
 
 // --- LOCALIZAR
-int Lista_localizar(Lista *,char []);
+enum Lista_localizar_retornos {LOCALIZACION_EXITOSA, ERROR_NO_EXISTE};
+int Lista_localizar(Lista *,char [], Lista_localizar_retornos *);
+
+// --- ALTA
+enum Lista_alta_retornos {ALTA_EXITOSA, ERROR_CODIGO_EXISTENTE, ERROR_LISTA_LLENA};
+int Lista_alta(Lista *,Envio);
 
 
 // Macro para Lista llena (recibe un puntero a la lista)
