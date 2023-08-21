@@ -68,9 +68,9 @@ int Lista_alta(Lista *lista, Envio nuevo) {
 }
 
 
-int Lista_baja(Lista *lista,char codigo_envio) {
+int Lista_baja(Lista *lista,char codigo_envio, int (*manejo_confirmacion)(Envio)) {
 
-    int posicion;
+    int posicion, salida = 0;
     Lista_localizar_retornos exito_localizar;
 
     // Se captura el resultado de la localizacion y su respectiva
@@ -78,8 +78,24 @@ int Lista_baja(Lista *lista,char codigo_envio) {
     posicion = Lista_localizar(lista,codigo_envio,&exito_localizar);
 
     if (exito_localizar == LOCALIZACION_EXITOSA) {
-        for (int i=posicion; i<)
+        int confirmacion = 1;
+
+        // 'manejo_confirmacion' es un puntero a una funcion que devuelve
+        // si se confirma la baja o no
+        if (manejo_confirmacion != NULL) confirmacion = manejo_confirmacion(*(lista->arreglo[posicion]));
+
+        // Permite cancelar la baja por medio de la funcion 'manejo_confirmacion'
+        if (confirmacion) {
+            for (int i=posicion; i<lista->limite_superior; i++) {
+                lista->arreglo[i] = lista->arreglo[i+1];
+            }
+
+            // Reduce el limite superior en UNO
+            lista->limite_superior--;
+            // Actualiza el valor de salida
+            salida = 1;
+        }
     }
 
-    else return 0;
+    return salida;
 }
