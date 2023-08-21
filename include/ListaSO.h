@@ -31,6 +31,10 @@ int Lista_alta(Lista *,Envio);
 enum Lista_baja_retornos {BAJA_ERROR_NO_EXISTE, BAJA_EXITOSA};
 int Lista_baja(Lista *,char [],int (*)(Envio));
 
+// --- MODIFICAR
+enum Lista_modificacion_retornos {MODIFICACION_CANCELADA, MODIFICACION_EXITOSA};
+int Lista_modificacion(Lista *,char [], int (*)(Envio *));
+
 
 // Macro para Lista llena (recibe un puntero a la lista)
 #define Lista_estaLlena(L) ((L)->limite_superior >= (LISTA_TAM_ARREGLO - 1))

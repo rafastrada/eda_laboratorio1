@@ -100,3 +100,35 @@ int Lista_baja(Lista *lista,char codigo_envio[], int (*manejo_confirmacion)(Envi
 
     return salida;
 }
+
+int Lista_modificacion(Lista *lista,char codigo_envio[],int (*manejo_remplazo)(Envio *)) {
+
+    int posicion, exito_localizar, salida = MODIFICACION_CANCELADA; // salida por defecto
+
+    // Se busca el 'codigo_envio' en la lista
+    posicion = Lista_localizar(lista,codigo_envio,&exito_localizar);
+
+    // Si existe el elemento, se procesa la modificacion
+    if (exito_localizar == LOCALIZACION_EXITOSA) {
+        // Variable para confirmar la modificacion del elemento
+        // (por defecto NO se lleva a cabo la modificacion)
+        int confirmacion = 0;
+        // Objeto ENVIO temporal intermedio para modificar sus campos
+        Envio temporal = lista->arreglo[posicion];
+
+        // 'manejo_remplazo' es puntero a una funcion que modificara los campos de 'temporal'
+        // para posteriormente aplicarlos en la lista. Su retorno sirve para confirmar o
+        // cancelar la modificacion.
+        // NOTA: LA FUNCION NO DEBE MODIFICAR EL CODIGO DE ENVIO
+        if (manejo_remplazo != NULL) confirmacion = manejo_remplazo(&temporal);
+
+        // Se guardan los cambios en caso de confirmacion
+        if (confirmacion) {
+                lista->arreglo[posicion] = temporal;
+                //Se actualiza la salida
+                salida = MODIFICACION_EXITOSA;
+        }
+    }
+
+    return salida;
+}
