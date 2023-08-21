@@ -20,15 +20,16 @@ typedef struct {
 void Lista_init(Lista *);
 
 // --- LOCALIZAR
-enum Lista_localizar_retornos {LOCALIZACION_EXITOSA, ERROR_NO_EXISTE};
-int Lista_localizar(Lista *,char [], Lista_localizar_retornos *);
+enum Lista_localizar_retornos {LOCALIZACION_ERROR_NO_EXISTE, LOCALIZACION_EXITOSA};
+int Lista_localizar(Lista *,char [], int *);
 
 // --- ALTA
-enum Lista_alta_retornos {ALTA_EXITOSA, ERROR_CODIGO_EXISTENTE, ERROR_LISTA_LLENA};
+enum Lista_alta_retornos {ALTA_ERROR_CODIGO_EXISTENTE, ALTA_EXITOSA , ALTA_ERROR_LISTA_LLENA};
 int Lista_alta(Lista *,Envio);
 
 // --- BAJA
-int Lista_baja(Lista *,char []);
+enum Lista_baja_retornos {BAJA_ERROR_NO_EXISTE, BAJA_EXITOSA};
+int Lista_baja(Lista *,char [],int (*)(Envio));
 
 
 // Macro para Lista llena (recibe un puntero a la lista)
