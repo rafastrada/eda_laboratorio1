@@ -1,25 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Envio.h"
+#include "ListaSO.h"
+
+
+// --- CADENAS GLOBALES
+#define PANTALLA_BARRA "-----------------------------------------------------------------------\n"
+#define PANTALLA_PRINCIPAL_OPERACIONES "\
+1. Buscar un Envio por su codigo\n\
+2. Agregar un nuevo Envio\n\
+3. Cargar Envios desde el archivo \"Envios.txt\"\n\
+4. Salir del programa\n"
+
+
 
 int main()
 {
-    printf("Hello world!\n");
+    // Declaracion e inicializacion de la estructura LISTA
+    Lista lista_envios; Lista_init(&lista_envios);
 
-    // TEST
-    Envio prueba;
-    Envio_init(&prueba);
+    // INICIO DEL PROGRAMA
+    int seleccion_usuario = -1; // variable para guardar la opcion elegida por usuario
+    do {
+        system("cls");  // limpa la pantalla
 
-    printf("%s\n%u\n%s\n%s\n%u\n%s\n%s\n%s\n\n",
-           Envio_get_codigo_envio(&prueba),
-           Envio_get_dni_receptor(&prueba),
-           Envio_get_nombre_apellido_receptor(&prueba),
-           Envio_get_domicilio_receptor(&prueba),
-           Envio_get_dni_remitente(&prueba),
-           Envio_get_nombre_apellido_remitente(&prueba),
-           Envio_get_fecha_envio(&prueba),
-           Envio_get_fecha_recepcion(&prueba)
-           );
+        printf("%sEL REVOLEO\tAdministracion de envios\n%s"
+               "MENU PRINCIPAL\nElija una operacion:\n\n"
+               "%s\n"
+               ">> ",
+               PANTALLA_BARRA,PANTALLA_BARRA,
+               PANTALLA_PRINCIPAL_OPERACIONES);
+
+        // Se captura la opcion ingresada por el usuario
+        fflush(stdin); scanf("%d",&seleccion_usuario);
+
+        // ACA OPERACIONES
+
+    } while (seleccion_usuario != 4);
+
 
     return 0;
 }
