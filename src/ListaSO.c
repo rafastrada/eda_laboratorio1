@@ -132,3 +132,20 @@ int Lista_modificacion(Lista *lista,char codigo_envio[],int (*manejo_remplazo)(E
 
     return salida;
 }
+
+int Lista_consulta(Lista *lista, char codigo_envio[], Envio *consultado) {
+    int posicion, exito_localizar, salida = CONSULTA_ERROR_NO_EXISTE;
+
+    // Se busca el elemento en la lista, y se captura su posicion
+    posicion = Lista_localizar(lista,codigo_envio,&exito_localizar);
+
+    // Si el elemento existe, se procesa.
+    // Caso contrario la funcion continua y retorna 'CONSULTA_ERROR_NO_EXISTE'
+    if (exito_localizar == LOCALIZACION_EXITOSA) {
+        // Se devuelve por puntero el elemento buscado
+        *consultado = lista->arreglo[posicion];
+        // Se actualiza la salida de la funcion
+        salida = CONSULTA_EXITOSA;
+    }
+    return salida;
+}
