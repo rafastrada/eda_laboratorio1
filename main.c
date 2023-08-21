@@ -24,25 +24,36 @@ int main()
     return 0;
 }
 
-//memorizacion previa
+/*void a_mayuscula(Envio dato){
+    int i, largo;
+    largo = strlen(dato->);
+    for (i = 0; i < largo; i++){
+        nombre[i] = toupper(nombre[i]);
+    }
+}
 
-/*int memorizacion_previa(Lista *lista, int *cant_repetidos, int *cargados, int tipo_orden){
+//memorizacion previa
+//tipo_orden es la forma de la estructura
+
+enum Memorizacion_previa {ERROR_DE_FICHERO, ERROR_NO_EXISTE};
+/*int Memorizacion_previa(Lista *lista, int *cant_repetidos, int *cargados, int tipo_orden){
     FILE *fichero;
     int resultado_alta = 1, repetidos = 0, indice = 0;
     Envio nuevo;
-    fichero = fopen("Vendedores.txt","r");
+    fichero = fopen("Envios.txt","r");
     if (fichero == NULL)
-        return -1;
+        return ERROR_DE_FICHERO;
     else {
         while(!feof(fichero)){
-            fscanf(fichero,"%d",&nuevo.dni);
-            fscanf(fichero," %[^\n]",nuevo.nombre);
-            fscanf(fichero," %[^\n]",nuevo.telefono);
-            fscanf(fichero,"%f",&nuevo.monto_vendido);
-            fscanf(fichero,"%d",&nuevo.cant_vendido);
-            fscanf(fichero," %[^\n]",nuevo.canal_venta);
-            a_mayuscula(nuevo.nombre);
-            /*
+            fscanf(fichero,"%s",nuevo->codigo_envio);
+            fscanf(fichero,"%d",&nuevo->dni_receptor);
+            fscanf(fichero," %[^\n]",nuevo->nombre_apellido_receptor);
+            fscanf(fichero," %[^\n]",nuevo->domicilio_receptor);
+            fscanf(fichero,"%d",&nuevo->dni_remitente);
+            fscanf(fichero," %[^\n]",nuevo->nombre_apellido_remitente);
+            fscanf(fichero,"%s",nuevo->fecha_envio);
+            fscanf(fichero,"%s",nuevo->fecha_receptcion);
+            a_mayuscula(nuevo);
             if(tipo_orden == 1)
                 resultado_alta = alta_lso(lista, nuevo);
             else
