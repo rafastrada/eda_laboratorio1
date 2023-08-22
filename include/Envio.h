@@ -2,10 +2,10 @@
 #define ENVIO_H
 
 // Tamanos de arreglos
-#define ENVIO_TAM_CODIGO_DE_ENVIO 10
-#define ENVIO_TAM_NOMBRE_APELLIDO 50
-#define ENVIO_TAM_DOMICILIO 50
-#define ENVIO_TAM_FECHA 12
+#define ENVIO_TAM_CODIGO_DE_ENVIO 8
+#define ENVIO_TAM_NOMBRE_APELLIDO 81
+#define ENVIO_TAM_DOMICILIO 81
+#define ENVIO_TAM_FECHA 11
 
 // Limites de algunos campos
 #define ENVIO_DNI_MINIMO 1000000

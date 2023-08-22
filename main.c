@@ -20,7 +20,7 @@ int main()
     Lista lista_envios; Lista_init(&lista_envios);
 
     // INICIO DEL PROGRAMA
-    int seleccion_usuario = -1; // variable para guardar la opcion elegida por usuario
+    char seleccion_usuario = ' '; // variable para guardar la opcion elegida por usuario
     do {
         system("cls");  // limpa la pantalla
 
@@ -32,11 +32,107 @@ int main()
                PANTALLA_PRINCIPAL_OPERACIONES);
 
         // Se captura la opcion ingresada por el usuario
-        fflush(stdin); scanf("%d",&seleccion_usuario);
+        fflush(stdin); seleccion_usuario = getchar();
 
-        // ACA OPERACIONES
+        // SELECCION DE OPERACION
+        switch (seleccion_usuario) {
+            // Agregar un nuevo ENVIO
+            case '2': {
+                // variable para respuesta de usuario
+                char respuesta_usuario;
+                do {
+                    // Variables para crear ENVIO
+                    char codigo_envio[ENVIO_TAM_CODIGO_DE_ENVIO];
+                    unsigned int dni_receptor, dni_remitente;
+                    char nombre_apellido_receptor[ENVIO_TAM_NOMBRE_APELLIDO],
+                    domicilio_receptor[ENVIO_TAM_DOMICILIO],
+                    nombre_apellido_remitente[ENVIO_TAM_NOMBRE_APELLIDO],
+                    fecha_envio[ENVIO_TAM_FECHA],
+                    fecha_recepcion[ENVIO_TAM_FECHA];
 
-    } while (seleccion_usuario != 4);
+                    Envio nuevo_envio; Envio_init(&nuevo_envio);    // variable temporal
+
+                    system("cls");  // limpia la pantalla
+
+                    // imprime pantalla - codigo de envio
+                    printf(
+                           "%sAgregar un nuevo Envio\n%s\n"
+                           "Ingrese el CODIGO DE ENVIO >>\t\t",
+                           PANTALLA_BARRA,PANTALLA_BARRA);
+
+                    // Se captura los datos ingresados por el usuario
+                    fflush(stdin); scanf("%7s",codigo_envio);   // codigo de envio
+
+                    // imprime pantalla - dni de receptor
+                    printf("\nIngrese el DNI del RECEPTOR >>\t\t");
+                    // captura - dni de receptor
+                    fflush(stdin); scanf("%u",&dni_receptor);
+
+                    // imprime pantalla - nombre y apellido de receptor
+                    printf("\nIngrese el NOMBRE Y APELLIDO del RECEPTOR >>\t");
+                    // captura
+                    fflush(stdin); scanf("%[\n]s",nombre_apellido_receptor);
+
+                    // imprime pantalla - domicilio de receptor
+                    printf("\nIngrese el DOMICILIO del RECEPTOR >>\t");
+                    // captura
+                    fflush(stdin); scanf("%[\n]s",domicilio_receptor);
+
+                    // imprime pantalla - dni de remitente
+                    printf("\nIngrese el DNI del REMITENTE >>\t\t");
+                    // captura
+                    fflush(stdin); scanf("%u",&dni_remitente);
+
+                    // imprime pantalla - nombre y apellido de remitente
+                    printf("\nIngrese el NOMBRE Y APELLIDO del REMITENTE >>\t");
+                    // captura
+                    fflush(stdin); scanf("%[\n]s",nombre_apellido_remitente);
+
+                    // imprime pantalla - fecha envio
+                    printf("\nIngrese la FECHA de ENVIO >>\t\t");
+                    // captura
+                    fflush(stdin); scanf("%10s",fecha_envio);
+
+                    // imprime pantalla - fecha recepcion
+                    printf("\nIngrese la FECHA de RECEPCION >>\t\t");
+                    // captura
+                    fflush(stdin); scanf("%10s",fecha_recepcion);
+
+                    // Se crea la variable temporal
+                    strcpy(nuevo_envio.codigo_envio,codigo_envio);
+                    nuevo_envio.dni_receptor = dni_receptor;
+                    strcpy(nuevo_envio.nombre_apellido_receptor,nombre_apellido_receptor);
+                    strcpy(nuevo_envio.domicilio_receptor,domicilio_receptor);
+                    nuevo_envio.dni_remitente = dni_remitente;
+                    strcpy(nuevo_envio.nombre_apellido_remitente,nombre_apellido_remitente);
+                    strcpy(nuevo_envio.fecha_envio,fecha_envio);
+                    strcpy(nuevo_envio.fecha_recepcion,fecha_recepcion);
+
+                    // Se realiza la operacion de ALTA
+                    int resultado_alta = Lista_alta(&lista_envios,nuevo_envio);
+
+                    // CASO de ALTA exitosa
+                    if (resultado_alta == ALTA_EXITOSA) printf("\n\nEl nuevo ENVIO se guardo correctamente!\n"
+                                                               "Desea agregar un nuevo ENVIO mas?\n[S/N] >>");
+                    else {
+                        // CASO de CODIGO DE ENVIO ya existente
+                        if (resultado_alta == ALTA_ERROR_CODIGO_EXISTENTE)
+                            printf("\n\nEl CODIGO de ENVIO \"%s\" ya existe! No se puede guardar el ENVIO ingresado.\n"
+                                   "Desea intentar de nuevo con un CODIGO de ENVIO diferente?\n[S/N] >>");
+                        else {
+                            printf("\n\nNo se pudo guardar el ENVIO, la memoria esta LLENA!\n\n");
+                            system("pause");
+                            break;  // se termina el bucle y se vuelve al menu principal
+                        }
+                    }
+
+                    // Captura de respuesta del usuario
+                    fflush(stdin); respuesta_usuario = getchar();
+                } while (respuesta_usuario == 's');
+            }
+        }
+
+    } while (seleccion_usuario != '4');
 
 
     return 0;
