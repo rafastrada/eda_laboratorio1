@@ -13,6 +13,9 @@
 4. Salir del programa\n"
 
 
+// --- DEFINICION DE MACROS
+// controla si una variable tipo 'char' es distinta de 's' y 'n' (util para entradas de tipo SI o NO)
+#define entradaDistintaSino(X) ((X) != 's' && (X) != 'n')
 
 int main()
 {
@@ -20,7 +23,7 @@ int main()
     Lista lista_envios; Lista_init(&lista_envios);
 
     // INICIO DEL PROGRAMA
-    char seleccion_usuario = ' '; // variable para guardar la opcion elegida por usuario
+    char seleccion_usuario_menu_principal = ' '; // variable para guardar la opcion elegida por usuario
     do {
         system("cls");  // limpa la pantalla
 
@@ -32,14 +35,14 @@ int main()
                PANTALLA_PRINCIPAL_OPERACIONES);
 
         // Se captura la opcion ingresada por el usuario
-        fflush(stdin); seleccion_usuario = getchar();
+        fflush(stdin); seleccion_usuario_menu_principal = getchar();
 
         // SELECCION DE OPERACION
-        switch (seleccion_usuario) {
+        switch (seleccion_usuario_menu_principal) {
             // Agregar un nuevo ENVIO
             case '2': {
                 // variable para respuesta de usuario
-                char respuesta_usuario;
+                char seleccion_usuario_menu_alta;
                 do {
                     // Variables para crear ENVIO
                     char codigo_envio[ENVIO_TAM_CODIGO_DE_ENVIO];
@@ -99,26 +102,28 @@ int main()
                     fflush(stdin); scanf("%10s",fecha_recepcion);
 
                     // Se crea la variable temporal
-                    strcpy(nuevo_envio.codigo_envio,codigo_envio);
+                    strcpy(nuevo_envio.codigo_envio,strupr(codigo_envio));
                     nuevo_envio.dni_receptor = dni_receptor;
-                    strcpy(nuevo_envio.nombre_apellido_receptor,nombre_apellido_receptor);
-                    strcpy(nuevo_envio.domicilio_receptor,domicilio_receptor);
+                    strcpy(nuevo_envio.nombre_apellido_receptor,strupr(nombre_apellido_receptor));
+                    strcpy(nuevo_envio.domicilio_receptor,strupr(domicilio_receptor));
                     nuevo_envio.dni_remitente = dni_remitente;
-                    strcpy(nuevo_envio.nombre_apellido_remitente,nombre_apellido_remitente);
-                    strcpy(nuevo_envio.fecha_envio,fecha_envio);
-                    strcpy(nuevo_envio.fecha_recepcion,fecha_recepcion);
+                    strcpy(nuevo_envio.nombre_apellido_remitente,strupr(nombre_apellido_remitente));
+                    strcpy(nuevo_envio.fecha_envio,strupr(fecha_envio));
+                    strcpy(nuevo_envio.fecha_recepcion,strupr(fecha_recepcion));
+
+                    // HACER: FALTAN CONTROLES!!!
 
                     // Se realiza la operacion de ALTA
                     int resultado_alta = Lista_alta(&lista_envios,nuevo_envio);
 
                     // CASO de ALTA exitosa
                     if (resultado_alta == ALTA_EXITOSA) printf("\n\nEl nuevo ENVIO se guardo correctamente!\n"
-                                                               "Desea agregar un nuevo ENVIO mas?\n[S/N] >>");
+                                                               "Desea agregar un nuevo ENVIO mas?\n[S/N] >> ");
                     else {
                         // CASO de CODIGO DE ENVIO ya existente
                         if (resultado_alta == ALTA_ERROR_CODIGO_EXISTENTE)
                             printf("\n\nEl CODIGO de ENVIO \"%s\" ya existe! No se puede guardar el ENVIO ingresado.\n"
-                                   "Desea intentar de nuevo con un CODIGO de ENVIO diferente?\n[S/N] >>");
+                                   "Desea intentar de nuevo con un CODIGO de ENVIO diferente?\n[S/N] >> ");
                         else {
                             printf("\n\nNo se pudo guardar el ENVIO, la memoria esta LLENA!\n\n");
                             system("pause");
@@ -127,12 +132,16 @@ int main()
                     }
 
                     // Captura de respuesta del usuario
-                    fflush(stdin); respuesta_usuario = getchar();
-                } while (respuesta_usuario == 's');
+                    fflush(stdin); seleccion_usuario_menu_alta = getchar();
+                    while (entradaDistintaSino(seleccion_usuario_menu_alta)) {
+                        printf("\n\nDebe ingresar una entrada valida!\n[S/N] >> ");
+                        fflush(stdin); seleccion_usuario_menu_alta = getchar();
+                    }
+                } while (seleccion_usuario_menu_alta == 's'); break; // termina el switch
             }
         }
 
-    } while (seleccion_usuario != '4');
+    } while (seleccion_usuario_menu_principal != '4');
 
 
     return 0;
