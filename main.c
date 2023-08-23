@@ -16,6 +16,19 @@
 // --- DEFINICION DE MACROS
 // controla si una variable tipo 'char' es distinta de 's' y 'n' (util para entradas de tipo SI o NO)
 #define entradaDistintaSino(X) ((X) != 's' && (X) != 'n')
+// impresion de un envio en el formato por defecto (debe recibir un ENVIO por valor, NO puntero)
+#define imprimirEnvio(E) printf("Codigo de Envio:\t\t\t%s\n"\
+                                 "DNI del Receptor:\t\t\t%u\n"\
+                                 "Nombre y Apellido del Receptor:\t%s\n"\
+                                 "Domicilio del Receptor:\t\t%s\n"\
+                                 "DNI del Remitente:\t\t\t%u\n"\
+                                 "Nombre y Apellido del Remitente:\t%s\n"\
+                                 "Fecha de Envio:\t\t\t%s\n"\
+                                 "Fecha de Recepcion:\t\t\t%s\n",\
+                                 (E).codigo_envio,(E).dni_receptor,\
+                                 (E).nombre_apellido_receptor,(E).domicilio_receptor,\
+                                 (E).dni_remitente,(E).nombre_apellido_remitente,\
+                                 (E).fecha_envio,(E).fecha_recepcion);
 
 int main()
 {
@@ -38,7 +51,50 @@ int main()
         fflush(stdin); seleccion_usuario_menu_principal = getchar();
 
         // SELECCION DE OPERACION
+        // ----------------------------------------------------------
         switch (seleccion_usuario_menu_principal) {
+
+            // Buscar un envio por CODIGO DE ENVIO
+            case '1': {
+                // variables para ambito de funcion de consulta
+                char seleccion_usuario_menu_buscar, codigo_envio[ENVIO_TAM_CODIGO_DE_ENVIO];
+                int resultado_consulta;
+                Envio envio_consultado;
+
+                do {
+                    // Imprime pantalla
+                    system("cls");
+                    printf(PANTALLA_BARRA
+                           "Buscar un ENVIO por su CODIGO\n"
+                           PANTALLA_BARRA
+                           "Ingrese el CODIGO del ENVIO que desea consultar >>\t");
+                    // Captura de codigo ingresado por usuario
+                    fflush(stdin); scanf("%7s",codigo_envio);
+                    strcpy(codigo_envio,strupr(codigo_envio)); // pasa a mayusculas
+
+                    // @todo : FALTA CONTROL PARA LA ENTRADA DE CODIGO
+
+                    // Proceso de consulta a la LISTA
+                    resultado_consulta = Lista_consulta(&lista_envios,codigo_envio,&envio_consultado);
+                    // CASO existe el elemento buscado
+                    if (resultado_consulta == CONSULTA_EXITOSA) {
+                        printf("\nEnvio encontrado! Se imprime a continuacion...\n\n");
+                        imprimirEnvio(envio_consultado);
+                        printf("\nDesea realizar otra busqueda? [S/N] >> ");
+                    }
+                    // CASO NO existe el elemento
+                    else printf("\n\nNo existe un Envio registrado con el Codigo %s!\n"
+                               "Desea probar con un Codigo de Envio diferente? [S/N] >> ",
+                               codigo_envio);
+
+                    //Captura de respuesta de usuario
+                    fflush(stdin); seleccion_usuario_menu_buscar = getchar();
+                    while (entradaDistintaSino(seleccion_usuario_menu_buscar)) {
+                        printf("\nDebe ingresar una entrada valida!\n[S/N] >> ");
+                        fflush(stdin); seleccion_usuario_menu_buscar = getchar();
+                    }
+                } while (seleccion_usuario_menu_buscar == 's'); break; // termina el switch
+            }
             // Agregar un nuevo ENVIO
             case '2': {
                 // variable para respuesta de usuario
@@ -111,7 +167,9 @@ int main()
                     strcpy(nuevo_envio.fecha_envio,strupr(fecha_envio));
                     strcpy(nuevo_envio.fecha_recepcion,strupr(fecha_recepcion));
 
-                    // HACER: FALTAN CONTROLES!!!
+                    // @todo: FALTAN CONTROLES
+                    // @fixme : nombres y domicilio se guardan en blanco
+
 
                     // Se realiza la operacion de ALTA
                     int resultado_alta = Lista_alta(&lista_envios,nuevo_envio);
@@ -123,7 +181,8 @@ int main()
                         // CASO de CODIGO DE ENVIO ya existente
                         if (resultado_alta == ALTA_ERROR_CODIGO_EXISTENTE)
                             printf("\n\nEl CODIGO de ENVIO \"%s\" ya existe! No se puede guardar el ENVIO ingresado.\n"
-                                   "Desea intentar de nuevo con un CODIGO de ENVIO diferente?\n[S/N] >> ");
+                                   "Desea intentar de nuevo con un CODIGO de ENVIO diferente?\n[S/N] >> ",
+                                   codigo_envio);
                         else {
                             printf("\n\nNo se pudo guardar el ENVIO, la memoria esta LLENA!\n\n");
                             system("pause");
@@ -134,7 +193,7 @@ int main()
                     // Captura de respuesta del usuario
                     fflush(stdin); seleccion_usuario_menu_alta = getchar();
                     while (entradaDistintaSino(seleccion_usuario_menu_alta)) {
-                        printf("\n\nDebe ingresar una entrada valida!\n[S/N] >> ");
+                        printf("\nDebe ingresar una entrada valida!\n[S/N] >> ");
                         fflush(stdin); seleccion_usuario_menu_alta = getchar();
                     }
                 } while (seleccion_usuario_menu_alta == 's'); break; // termina el switch
