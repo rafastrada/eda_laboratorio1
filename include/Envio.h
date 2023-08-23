@@ -9,6 +9,7 @@
 
 // Limites de algunos campos
 #define ENVIO_DNI_MINIMO 1000000
+#define ENVIO_DNI_MAXIMO 99999999
 #define ENVIO_FECHA_MINIMA "2000-01-01"
 
 
@@ -27,5 +28,10 @@ typedef struct {
 // Funciones para el objeto Envio
 void Envio_init(Envio *);
 void Envio_copiar(Envio *,Envio *);
+
+// Funciones de control
+int Envio_esCorrecto_fecha(char []);
+int Envio_esCorrecto_codigo(char []);
+#define Envio_esCorrecto_dni(X) ((X) >= ENVIO_DNI_MINIMO && (X) <= ENVIO_DNI_MAXIMO) // NO pasar punteros
 
 #endif // ENVIO_H
