@@ -19,11 +19,11 @@
 // impresion de un envio en el formato por defecto (debe recibir un ENVIO por valor, NO puntero)
 #define imprimirEnvio(E) printf("Codigo de Envio:\t\t\t%s\n"\
                                  "DNI del Receptor:\t\t\t%u\n"\
-                                 "Nombre y Apellido del Receptor:\t%s\n"\
-                                 "Domicilio del Receptor:\t\t%s\n"\
+                                 "Nombre y Apellido del Receptor:\t\t%s\n"\
+                                 "Domicilio del Receptor:\t\t\t%s\n"\
                                  "DNI del Remitente:\t\t\t%u\n"\
                                  "Nombre y Apellido del Remitente:\t%s\n"\
-                                 "Fecha de Envio:\t\t\t%s\n"\
+                                 "Fecha de Envio:\t\t\t\t%s\n"\
                                  "Fecha de Recepcion:\t\t\t%s\n",\
                                  (E).codigo_envio,(E).dni_receptor,\
                                  (E).nombre_apellido_receptor,(E).domicilio_receptor,\
@@ -58,7 +58,7 @@ int main()
             case '1': {
                 // variables para ambito de funcion de consulta
                 char seleccion_usuario_menu_buscar, codigo_envio[ENVIO_TAM_CODIGO_DE_ENVIO];
-                int resultado_consulta;
+                int resultado_consulta, entrada_correcta;
                 Envio envio_consultado;
 
                 do {
@@ -68,11 +68,20 @@ int main()
                            "Buscar un ENVIO por su CODIGO\n"
                            PANTALLA_BARRA
                            "Ingrese el CODIGO del ENVIO que desea consultar >>\t");
-                    // Captura de codigo ingresado por usuario
-                    fflush(stdin); scanf("%7s",codigo_envio);
-                    strcpy(codigo_envio,strupr(codigo_envio)); // pasa a mayusculas
 
-                    // @todo : FALTA CONTROL PARA LA ENTRADA DE CODIGO
+                    // Captura de codigo ingresado por usuario
+                    do {
+                        fflush(stdin); scanf("%s",codigo_envio);
+                        strcpy(codigo_envio,strupr(codigo_envio)); // pasa a mayusculas
+
+
+                        // Control de Codigo de envio correcto
+                        entrada_correcta = Envio_esCorrecto_codigo(codigo_envio);
+                        if (!entrada_correcta)
+                            printf("Debe ingresar un CODIGO valido! (7 caracteres alfanumericos) >> ");
+
+                    } while (!entrada_correcta);
+
 
                     // Proceso de consulta a la LISTA
                     resultado_consulta = Lista_consulta(&lista_envios,codigo_envio,&envio_consultado);
@@ -99,6 +108,7 @@ int main()
             case '2': {
                 // variable para respuesta de usuario
                 char seleccion_usuario_menu_alta;
+                int entrada_correcta;     // para controles
                 do {
                     // Variables para crear ENVIO
                     char codigo_envio[ENVIO_TAM_CODIGO_DE_ENVIO];
@@ -113,59 +123,85 @@ int main()
 
                     system("cls");  // limpia la pantalla
 
-                    // imprime pantalla - codigo de envio
+                    // Se captura codigo de envio
                     printf(
                            "%sAgregar un nuevo Envio\n%s\n"
-                           "Ingrese el CODIGO DE ENVIO >>\t\t",
+                           "Ingrese el CODIGO DE ENVIO >>\t\t\t",
                            PANTALLA_BARRA,PANTALLA_BARRA);
+                    do {
+                        fflush(stdin); scanf("%s",codigo_envio);
+                        strcpy(codigo_envio,strupr(codigo_envio));
+                        // Control
+                        entrada_correcta = Envio_esCorrecto_codigo(codigo_envio);
+                        if (!entrada_correcta)
+                            printf("Debe ingresar un CODIGO valido! (7 caracteres alfanumericos) >> ");
+                    } while (!entrada_correcta);
 
-                    // Se captura los datos ingresados por el usuario
-                    fflush(stdin); scanf("%7s",codigo_envio);   // codigo de envio
-
-                    // imprime pantalla - dni de receptor
-                    printf("\nIngrese el DNI del RECEPTOR >>\t\t");
                     // captura - dni de receptor
-                    fflush(stdin); scanf("%u",&dni_receptor);
+                    printf("\nIngrese el DNI del RECEPTOR >>\t\t\t");
+                    do {
+                        fflush(stdin); scanf("%u",&dni_receptor);
+                        //control
+                        entrada_correcta = Envio_esCorrecto_dni(dni_receptor);
+                        if (!entrada_correcta)
+                            printf("Debe ingresar un DNI valido! >> ");
+                    } while (!entrada_correcta);
 
-                    // imprime pantalla - nombre y apellido de receptor
+                    // captura - nombre y apellido de receptor
                     printf("\nIngrese el NOMBRE Y APELLIDO del RECEPTOR >>\t");
-                    // captura
-                    fflush(stdin); scanf("%[\n]s",nombre_apellido_receptor);
+                    fflush(stdin); scanf("%[^\n]s",nombre_apellido_receptor);
+                    strcpy(nombre_apellido_receptor,strupr(nombre_apellido_receptor));
 
-                    // imprime pantalla - domicilio de receptor
-                    printf("\nIngrese el DOMICILIO del RECEPTOR >>\t");
-                    // captura
-                    fflush(stdin); scanf("%[\n]s",domicilio_receptor);
+                    // captura - domicilio de receptor
+                    printf("\nIngrese el DOMICILIO del RECEPTOR >>\t\t");
+                    fflush(stdin); scanf("%[^\n]s",domicilio_receptor);
+                    strcpy(domicilio_receptor,strupr(domicilio_receptor));
 
-                    // imprime pantalla - dni de remitente
-                    printf("\nIngrese el DNI del REMITENTE >>\t\t");
-                    // captura
-                    fflush(stdin); scanf("%u",&dni_remitente);
+                    // captura - dni de remitente
+                    printf("\nIngrese el DNI del REMITENTE >>\t\t\t");
+                    do {
+                        fflush(stdin); scanf("%u",&dni_remitente);
+                        //control
+                        entrada_correcta = Envio_esCorrecto_dni(dni_remitente);
+                        if (!entrada_correcta)
+                            printf("Debe ingresar un DNI valido! >> ");
+                    } while (!entrada_correcta);
 
-                    // imprime pantalla - nombre y apellido de remitente
+
+                    // captura - nombre y apellido de remitente
                     printf("\nIngrese el NOMBRE Y APELLIDO del REMITENTE >>\t");
-                    // captura
-                    fflush(stdin); scanf("%[\n]s",nombre_apellido_remitente);
+                    fflush(stdin); scanf("%[^\n]s",nombre_apellido_remitente);
+                    strcpy(nombre_apellido_remitente,strupr(nombre_apellido_remitente));
 
-                    // imprime pantalla - fecha envio
-                    printf("\nIngrese la FECHA de ENVIO >>\t\t");
-                    // captura
-                    fflush(stdin); scanf("%10s",fecha_envio);
+                    // captura - fecha envio
+                    printf("\nIngrese la FECHA de ENVIO >>\t\t\t");
+                    do {
+                        fflush(stdin); scanf("%s",fecha_envio);
+                        //control
+                        entrada_correcta = Envio_esCorrecto_fecha(fecha_envio);
+                        if (!entrada_correcta)
+                            printf("Debe ingresar un formato de FECHA valida! (AAAA-MM-DD) >> ");
+                    } while (!entrada_correcta);
 
-                    // imprime pantalla - fecha recepcion
+                    // captura - fecha recepcion
                     printf("\nIngrese la FECHA de RECEPCION >>\t\t");
-                    // captura
-                    fflush(stdin); scanf("%10s",fecha_recepcion);
+                    do {
+                        fflush(stdin); scanf("%s",fecha_recepcion);
+                        //control
+                        entrada_correcta = Envio_esCorrecto_fecha(fecha_recepcion);
+                        if (!entrada_correcta)
+                            printf("Debe ingresar un formato de FECHA valida! (AAAA-MM-DD) >> ");
+                    } while (!entrada_correcta);
 
                     // Se crea la variable temporal
-                    strcpy(nuevo_envio.codigo_envio,strupr(codigo_envio));
+                    strcpy(nuevo_envio.codigo_envio,codigo_envio);
                     nuevo_envio.dni_receptor = dni_receptor;
-                    strcpy(nuevo_envio.nombre_apellido_receptor,strupr(nombre_apellido_receptor));
-                    strcpy(nuevo_envio.domicilio_receptor,strupr(domicilio_receptor));
+                    strcpy(nuevo_envio.nombre_apellido_receptor,nombre_apellido_receptor);
+                    strcpy(nuevo_envio.domicilio_receptor,domicilio_receptor);
                     nuevo_envio.dni_remitente = dni_remitente;
-                    strcpy(nuevo_envio.nombre_apellido_remitente,strupr(nombre_apellido_remitente));
-                    strcpy(nuevo_envio.fecha_envio,strupr(fecha_envio));
-                    strcpy(nuevo_envio.fecha_recepcion,strupr(fecha_recepcion));
+                    strcpy(nuevo_envio.nombre_apellido_remitente,nombre_apellido_remitente);
+                    strcpy(nuevo_envio.fecha_envio,fecha_envio);
+                    strcpy(nuevo_envio.fecha_recepcion,fecha_recepcion);
 
                     // @todo: FALTAN CONTROLES
                     // @fixme : nombres y domicilio se guardan en blanco
@@ -173,6 +209,8 @@ int main()
 
                     // Se realiza la operacion de ALTA
                     int resultado_alta = Lista_alta(&lista_envios,nuevo_envio);
+
+                    // @todo : permitir confirmar el alta
 
                     // CASO de ALTA exitosa
                     if (resultado_alta == ALTA_EXITOSA) printf("\n\nEl nuevo ENVIO se guardo correctamente!\n"

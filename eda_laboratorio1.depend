@@ -1,15 +1,15 @@
 # depslib dependency file v1.0
-1692807249 source:c:\users\guillermo\codeblocks\eda_laboratorio1\main.c
+1692821323 source:c:\users\guillermo\codeblocks\eda_laboratorio1\main.c
 	<stdio.h>
 	<stdlib.h>
 	"Envio.h"
 	"ListaSO.h"
 
-1692571864 source:c:\users\guillermo\codeblocks\eda_laboratorio1\src\envio.c
+1692822090 source:c:\users\guillermo\codeblocks\eda_laboratorio1\src\envio.c
 	"Envio.h"
 	<string.h>
 
-1692657042 c:\users\guillermo\codeblocks\eda_laboratorio1\include\envio.h
+1692818662 c:\users\guillermo\codeblocks\eda_laboratorio1\include\envio.h
 
 1692648238 c:\users\guillermo\codeblocks\eda_laboratorio1\include\listaso.h
 	"Envio.h"

@@ -62,9 +62,10 @@ int Envio_esCorrecto_codigo(char codigo_envio[]) {
         // recorre la cadena
         for (int i = 0; i < 7; i++) {
             // solo contiene letras y numeros
-            if (strchr("ABCDEFGHIJKLMNOPQRSTUVXYZ0123456789", codigo_envio[i]) == NULL) return 0;
+            if (strchr("ABCDEFGHIJKLMNOPQRSTUVXYZ0123456789",codigo_envio[i]) == NULL) return 0;
         }
     }
+    else return 0;
 
     return 1;
 }
