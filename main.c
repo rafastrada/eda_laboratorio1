@@ -30,6 +30,67 @@
                                  (E).dni_remitente,(E).nombre_apellido_remitente,\
                                  (E).fecha_envio,(E).fecha_recepcion);
 
+//memorizacion previa
+
+
+enum Memorizacion_previa {ERROR_ABRIR_FICHERO, MEMORIZACION_EXITOSA, MEMORIZACION_PARCIAL};
+int Memorizacion_previa(Lista *lista, int *cant_repetidos, int *cargados){
+    FILE *fichero;
+    int resultado_alta, repetidos = 0, indice = 0;
+
+    Envio nuevo_envio; Envio_init(&nuevo_envio); //variable temporal
+
+    fichero = fopen("Envios.txt","r"); //abrir el archivo
+    if (fichero == NULL)
+
+        return ERROR_ABRIR_FICHERO;
+
+    else {
+        while(!feof(fichero)){
+
+            fscanf(fichero," %[^\n]",nuevo_envio.codigo_envio);
+            strcpy(nuevo_envio.codigo_envio,strupr(nuevo_envio.codigo_envio));
+
+            fscanf(fichero,"%d",&nuevo_envio.dni_receptor);
+
+            fscanf(fichero," %[^\n]",nuevo_envio.nombre_apellido_receptor);
+            strcpy(nuevo_envio.nombre_apellido_receptor,strupr(nuevo_envio.nombre_apellido_receptor));
+
+            fscanf(fichero," %[^\n]",nuevo_envio.domicilio_receptor);
+            strcpy(nuevo_envio.domicilio_receptor,strupr(nuevo_envio.domicilio_receptor));
+
+            fscanf(fichero,"%d",&nuevo_envio.dni_remitente);
+
+            fscanf(fichero," %[^\n]",nuevo_envio.nombre_apellido_remitente);
+            strcpy(nuevo_envio.nombre_apellido_remitente,strupr(nuevo_envio.nombre_apellido_remitente));
+
+            fscanf(fichero," %[^\n]",nuevo_envio.fecha_envio);
+
+            fscanf(fichero," %[^\n]",nuevo_envio.fecha_recepcion);
+
+            resultado_alta = Lista_alta(lista, nuevo_envio);
+
+            if (resultado_alta == ALTA_ERROR_LISTA_LLENA){
+                fclose(fichero);
+                break;
+            }
+            if (resultado_alta == ALTA_ERROR_CODIGO_EXISTENTE){
+                repetidos ++;
+            }
+            indice ++;
+        }
+    }
+
+    *cargados = indice;
+    *cant_repetidos = repetidos;
+    fclose(fichero);
+
+    if(resultado_alta == ALTA_ERROR_LISTA_LLENA){
+        return MEMORIZACION_PARCIAL;
+    }
+    return MEMORIZACION_EXITOSA;
+}
+
 int main()
 {
     // Declaracion e inicializacion de la estructura LISTA
@@ -236,6 +297,28 @@ int main()
                     }
                 } while (seleccion_usuario_menu_alta == 's'); break; // termina el switch
             }
+            case '3':{
+                system("cls");
+                int resultado, repetidos = 0, cant, cargas;
+                resultado = Memorizacion_previa(&lista_envios, &repetidos, &cargas);
+
+                if(resultado == MEMORIZACION_EXITOSA){
+                    printf("La memorizacion fue exitosa.\n\n");
+                }
+                if(resultado == MEMORIZACION_PARCIAL){
+                    printf("La memorizacion fue exitosa parcialmente.\n La cantidad de envios en el archivo era mayor al maximo de la lista\n\n ");
+                }
+                if(resultado == ERROR_ABRIR_FICHERO) {
+                    printf("Existe un problema al intentar abrir el archivo.\n Por favor revisar el archivo \"Envios.txt\" \n");
+                }
+                if(resultado != ERROR_ABRIR_FICHERO) {
+                    printf("Se intentaron cargar %d Envios \n", cargas);
+                    printf("De los cuales:\n \t Envios repetidos: %d \n \t Envios cargados correctamente: %d \n ", repetidos, cargas - repetidos);
+                }
+
+            system("pause"); break;
+            }
+
         }
 
     } while (seleccion_usuario_menu_principal != '4');
@@ -243,58 +326,3 @@ int main()
 
     return 0;
 }
-
-/*void a_mayuscula(Envio dato){
-    int i, largo;
-    largo = strlen(dato->);
-    for (i = 0; i < largo; i++){
-        nombre[i] = toupper(nombre[i]);
-    }
-}
-
-//memorizacion previa
-//tipo_orden es la forma de la estructura
-
-enum Memorizacion_previa {ERROR_DE_FICHERO, ERROR_NO_EXISTE};
-/*int Memorizacion_previa(Lista *lista, int *cant_repetidos, int *cargados, int tipo_orden){
-    FILE *fichero;
-    int resultado_alta = 1, repetidos = 0, indice = 0;
-    Envio nuevo;
-    fichero = fopen("Envios.txt","r");
-    if (fichero == NULL)
-        return ERROR_DE_FICHERO;
-    else {
-        while(!feof(fichero)){
-            fscanf(fichero,"%s",nuevo->codigo_envio);
-            fscanf(fichero,"%d",&nuevo->dni_receptor);
-            fscanf(fichero," %[^\n]",nuevo->nombre_apellido_receptor);
-            fscanf(fichero," %[^\n]",nuevo->domicilio_receptor);
-            fscanf(fichero,"%d",&nuevo->dni_remitente);
-            fscanf(fichero," %[^\n]",nuevo->nombre_apellido_remitente);
-            fscanf(fichero,"%s",nuevo->fecha_envio);
-            fscanf(fichero,"%s",nuevo->fecha_receptcion);
-            a_mayuscula(nuevo);
-            if(tipo_orden == 1)
-                resultado_alta = alta_lso(lista, nuevo);
-            else
-                resultado_alta = alta_lsobb(lista, nuevo);
-            if (resultado_alta == -1){
-                fclose(fichero);
-                break;
-            }
-            if (resultado_alta == 0){
-                repetidos ++;
-            }
-            indice ++;
-        }
-    }
-
-    *cargados = indice;
-    *cant_repetidos = repetidos;
-    fclose(fichero);
-
-    if(resultado_alta == -1){
-        return 0;
-    }
-    return 1;
-}*/
