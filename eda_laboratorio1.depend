@@ -18,3 +18,22 @@
 	"ListaSO.h"
 	"stdlib.h"
 
+1693178733 source:c:\users\usuario\desktop\facultad\2ºaño\eda\laboratorios\eda_laboratorio1\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Envio.h"
+	"ListaSO.h"
+
+1692829453 c:\users\usuario\desktop\facultad\2ºaño\eda\laboratorios\eda_laboratorio1\include\envio.h
+
+1693178980 c:\users\usuario\desktop\facultad\2ºaño\eda\laboratorios\eda_laboratorio1\include\listaso.h
+	"Envio.h"
+
+1692829453 source:c:\users\usuario\desktop\facultad\2ºaño\eda\laboratorios\eda_laboratorio1\src\envio.c
+	"Envio.h"
+	<string.h>
+
+1692829453 source:c:\users\usuario\desktop\facultad\2ºaño\eda\laboratorios\eda_laboratorio1\src\listaso.c
+	"ListaSO.h"
+	"stdlib.h"
+
