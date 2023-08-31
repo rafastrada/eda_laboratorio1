@@ -10,9 +10,10 @@
 1. Buscar un Envio por su codigo\n\
 2. Agregar un nuevo Envio\n\
 3. Eliminar un Envio\n\
-4. Cargar Envios desde el archivo \"Envios.txt\"\n\
-5. Mostrar Estructura\n\
-6. Salir del programa\n"
+4. Modificar un Envio\n\
+5. Cargar Envios desde el archivo \"Envios.txt\"\n\
+6. Mostrar Estructura\n\
+7. Salir del programa\n"
 
 
 // --- DEFINICION DE MACROS
@@ -50,25 +51,25 @@ int Memorizacion_previa(Lista *lista, int *cant_repetidos, int *cargados){
     else {
         while(!feof(fichero)){
 
-            fscanf(fichero," %[^\n]",nuevo_envio.codigo_envio);
+            fscanf(fichero," %[^\n]s",nuevo_envio.codigo_envio);
             strcpy(nuevo_envio.codigo_envio,strupr(nuevo_envio.codigo_envio));
 
-            fscanf(fichero,"%d",&nuevo_envio.dni_receptor);
+            fscanf(fichero,"%u",&nuevo_envio.dni_receptor);
 
-            fscanf(fichero," %[^\n]",nuevo_envio.nombre_apellido_receptor);
+            fscanf(fichero," %[^\n]s",nuevo_envio.nombre_apellido_receptor);
             strcpy(nuevo_envio.nombre_apellido_receptor,strupr(nuevo_envio.nombre_apellido_receptor));
 
-            fscanf(fichero," %[^\n]",nuevo_envio.domicilio_receptor);
+            fscanf(fichero," %[^\n]s",nuevo_envio.domicilio_receptor);
             strcpy(nuevo_envio.domicilio_receptor,strupr(nuevo_envio.domicilio_receptor));
 
-            fscanf(fichero,"%d",&nuevo_envio.dni_remitente);
+            fscanf(fichero,"%u",&nuevo_envio.dni_remitente);
 
-            fscanf(fichero," %[^\n]",nuevo_envio.nombre_apellido_remitente);
+            fscanf(fichero," %[^\n]s",nuevo_envio.nombre_apellido_remitente);
             strcpy(nuevo_envio.nombre_apellido_remitente,strupr(nuevo_envio.nombre_apellido_remitente));
 
-            fscanf(fichero," %[^\n]",nuevo_envio.fecha_envio);
+            fscanf(fichero," %[^\n]s",nuevo_envio.fecha_envio);
 
-            fscanf(fichero," %[^\n]",nuevo_envio.fecha_recepcion);
+            fscanf(fichero," %[^\n]s",nuevo_envio.fecha_recepcion);
 
             resultado_alta = Lista_alta(lista, nuevo_envio);
 
@@ -129,6 +130,114 @@ int confirmacionBaja(Envio envio) {
     }
 
     if (seleccion_usuario == 's') return 1;
+    else return 0;
+}
+
+int confirmacionModificacion(Envio *envio) {
+    // Devuelve 1 cuando se confirma la modificacion
+    //          0 cuando se cancela
+
+    // Variables de control
+    int entrada_correcta;
+    char seleccion_usuario;
+
+    Envio envio_temporal; envio_temporal = *envio;    // variable temporal
+
+
+    // captura - dni de receptor
+    // -------------------------------------------------------
+    printf("\nDNI anterior: %u\n"
+           "Nuevo DNI del RECEPTOR >>\t\t\t"
+           ,envio_temporal.dni_receptor);
+    do {
+        fflush(stdin); scanf("%u",&envio_temporal.dni_receptor);
+        //control
+        entrada_correcta = Envio_esCorrecto_dni(envio_temporal.dni_receptor);
+        if (!entrada_correcta)
+            printf("Debe ingresar un DNI valido! >> ");
+    } while (!entrada_correcta);
+
+    // captura - nombre y apellido de receptor
+    // -----------------------------------------------------------------
+    printf("\nValor anterior: %s\n"
+           "Nuevo NOMBRE Y APELLIDO del RECEPTOR >>\t\t",
+           envio_temporal.nombre_apellido_receptor);
+    fflush(stdin); scanf("%[^\n]s",envio_temporal.nombre_apellido_receptor);
+    strcpy(envio_temporal.nombre_apellido_receptor,strupr(envio_temporal.nombre_apellido_receptor));
+
+    // captura - domicilio de receptor
+    // ----------------------------------------------------------------------
+    printf("\nValor anterior: %s\n"
+           "Nuevo DOMICILIO del RECEPTOR >>\t\t\t",
+           envio_temporal.domicilio_receptor);
+    fflush(stdin); scanf("%[^\n]s",envio_temporal.domicilio_receptor);
+    strcpy(envio_temporal.domicilio_receptor,strupr(envio_temporal.domicilio_receptor));
+
+    // captura - dni de remitente
+    // ----------------------------------------------------------------------
+    printf("\nDNI anterior: %u\n"
+           "Nuevo DNI del REMITENTE >>\t\t\t",
+           envio_temporal.dni_remitente);
+    do {
+        fflush(stdin); scanf("%u",&envio_temporal.dni_remitente);
+        //control
+        entrada_correcta = Envio_esCorrecto_dni(envio_temporal.dni_remitente);
+        if (!entrada_correcta)
+            printf("Debe ingresar un DNI valido! >> ");
+    } while (!entrada_correcta);
+
+
+    // captura - nombre y apellido de remitente
+    // ----------------------------------------------------------------------
+    printf("\nValor anterior: %s\n"
+           "Nuevo NOMBRE Y APELLIDO del REMITENTE >>\t",
+           envio_temporal.nombre_apellido_remitente);
+    fflush(stdin); scanf("%[^\n]s",envio_temporal.nombre_apellido_remitente);
+    strcpy(envio_temporal.nombre_apellido_remitente,strupr(envio_temporal.nombre_apellido_remitente));
+
+    // captura - fecha envio
+    // ----------------------------------------------------------------------
+    printf("\nFecha anterior: %s\n"
+           "Nueva FECHA de ENVIO >>\t\t\t\t",
+           envio_temporal.fecha_envio);
+    do {
+        fflush(stdin); scanf("%s",envio_temporal.fecha_envio);
+        //control
+        entrada_correcta = Envio_esCorrecto_fecha(envio_temporal.fecha_envio);
+        if (!entrada_correcta)
+            printf("Debe ingresar un formato de FECHA valida! (AAAA-MM-DD) >> ");
+    } while (!entrada_correcta);
+
+    // captura - fecha recepcion
+    // ----------------------------------------------------------------------
+    printf("\nFecha anterior: %s\n"
+           "Nueva FECHA de RECEPCION >>\t\t\t",
+           envio_temporal.fecha_recepcion);
+    do {
+        fflush(stdin); scanf("%s",envio_temporal.fecha_recepcion);
+        //control
+        entrada_correcta = Envio_esCorrecto_fecha(envio_temporal.fecha_recepcion);
+        if (!entrada_correcta)
+            printf("Debe ingresar un formato de FECHA valida! (AAAA-MM-DD) >> ");
+    } while (!entrada_correcta);
+
+
+    // Confirmacion del usuario
+    printf("\n\nDesea aplicar los cambios ingresados? [S/N] >> ");
+
+    fflush(stdin); seleccion_usuario = getchar();
+    while (entradaDistintaSino(seleccion_usuario)) {
+        printf("\nDebe ingresar una entrada valida!\n[S/N] >> ");
+        fflush(stdin); seleccion_usuario = getchar();
+    }
+
+    // retorno
+    if (seleccion_usuario == 's') {
+        // se guardan los cambios en la lista
+        *envio = envio_temporal;
+
+        return 1;
+    }
     else return 0;
 }
 
@@ -305,8 +414,6 @@ int main()
                     strcpy(nuevo_envio.fecha_envio,fecha_envio);
                     strcpy(nuevo_envio.fecha_recepcion,fecha_recepcion);
 
-                    // @todo: FALTAN CONTROLES
-                    // @fixme : nombres y domicilio se guardan en blanco
 
 
                     // Se realiza la operacion de ALTA
@@ -338,7 +445,59 @@ int main()
                     }
                 } while (seleccion_usuario_menu_alta == 's'); break; // termina el switch
             }
-            case '4':{
+            // Modificacion de un ENVIO
+            case '4': {
+                // variables
+                char seleccion_usuario_menu_modificacion, codigo_envio[ENVIO_TAM_CODIGO_DE_ENVIO];
+                int resultado_modificacion, entrada_correcta;
+
+                do {
+                    // Imprime pantalla
+                    system("cls");
+                    printf(PANTALLA_BARRA
+                           "Modificar un ENVIO\n"
+                           PANTALLA_BARRA
+                           "Ingrese el CODIGO del ENVIO que desea modificar >>\t");
+
+                    // Captura de codigo ingresado por usuario
+                    do {
+                        fflush(stdin); scanf("%s",codigo_envio);
+                        strcpy(codigo_envio,strupr(codigo_envio)); // pasa a mayusculas
+
+
+                        // Control de Codigo de envio correcto
+                        entrada_correcta = Envio_esCorrecto_codigo(codigo_envio);
+                        if (!entrada_correcta)
+                            printf("Debe ingresar un CODIGO valido! (7 caracteres alfanumericos) >> ");
+
+                    } while (!entrada_correcta);
+
+
+                    // Proceso de modificacion de un ENVIO en la LISTA
+                    resultado_modificacion = Lista_modificacion(&lista_envios,codigo_envio,confirmacionModificacion);
+
+
+                    // Caso de modificacion EXITOSA
+                    if (resultado_modificacion == MODIFICACION_EXITOSA) {
+                        printf("\nEl Envio %s se modifico correctamente!\n"
+                               "Desea modificar otro envio? [S/N] >> ",codigo_envio);
+                    }
+                    else if (resultado_modificacion == MODIFICACION_ERROR_NO_EXISTE) {
+                        printf("\nEl Envio %s no se encuentra en la lista!\n"
+                               "Desea buscar con un Codigo diferente? [S/N] >> ",codigo_envio);
+                    }
+                    // caso que se haya cancelado la modificacion
+                    else break; // sale al menu principal
+
+                    //Captura de respuesta de usuario
+                    fflush(stdin); seleccion_usuario_menu_modificacion = getchar();
+                    while (entradaDistintaSino(seleccion_usuario_menu_modificacion)) {
+                        printf("\nDebe ingresar una entrada valida!\n[S/N] >> ");
+                        fflush(stdin); seleccion_usuario_menu_modificacion = getchar();
+                    }
+                } while (seleccion_usuario_menu_modificacion == 's'); break; // termina el switch
+            }
+            case '5':{
                 system("cls");
                 int resultado, repetidos = 0, cant, cargas;
                 resultado = Memorizacion_previa(&lista_envios, &repetidos, &cargas);
@@ -410,18 +569,21 @@ int main()
 
                     } while (seleccion_usuario_menu_baja == 's'); break; // sale del switch
             }
+            // Mostrar la Estructura
+            case '6':{
+                system("cls");
 
-            case '5':{
-            system("cls");
-            printf(
-                           "%sMostrando Estructura\n%s\n",
-                           PANTALLA_BARRA,PANTALLA_BARRA);
-            Mostrar_Lista(lista_envios);
-            system("pause");
+                printf("%sMostrando Estructura\n%s\n",
+                       PANTALLA_BARRA,PANTALLA_BARRA);
+
+                Mostrar_Lista(lista_envios);
+
+                printf("\nSe ha llegado al final de la Lista.\n");
+                system("pause");
             }
         }
 
-    } while (seleccion_usuario_menu_principal != '6');
+    } while (seleccion_usuario_menu_principal != '7');
 
 
     return 0;

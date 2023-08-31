@@ -130,6 +130,7 @@ int Lista_modificacion(Lista *lista,char codigo_envio[],int (*manejo_remplazo)(E
                 salida = MODIFICACION_EXITOSA;
         }
     }
+    else salida = MODIFICACION_ERROR_NO_EXISTE;
 
     return salida;
 }

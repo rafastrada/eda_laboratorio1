@@ -32,7 +32,7 @@ enum Lista_baja_retornos {BAJA_ERROR_NO_EXISTE, BAJA_EXITOSA, BAJA_CANCELADA};
 int Lista_baja(Lista *,char [],int (*)(Envio));
 
 // --- MODIFICAR
-enum Lista_modificacion_retornos {MODIFICACION_CANCELADA, MODIFICACION_EXITOSA};
+enum Lista_modificacion_retornos {MODIFICACION_CANCELADA, MODIFICACION_EXITOSA, MODIFICACION_ERROR_NO_EXISTE};
 int Lista_modificacion(Lista *,char [], int (*)(Envio *));
 
 // --- CONSULTA
