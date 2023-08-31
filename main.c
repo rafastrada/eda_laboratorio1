@@ -1,3 +1,13 @@
+/*
+Numero de grupo: 9
+
+Integrantes:
+- Alan Ezequiel Bernal
+- Guillermo Estrada Dubor
+
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "Envio.h"
