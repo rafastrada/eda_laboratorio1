@@ -10,7 +10,8 @@
 1. Buscar un Envio por su codigo\n\
 2. Agregar un nuevo Envio\n\
 3. Cargar Envios desde el archivo \"Envios.txt\"\n\
-4. Salir del programa\n"
+4. Mostrar Estructura\n\
+5. Salir del programa\n"
 
 
 // --- DEFINICION DE MACROS
@@ -89,6 +90,21 @@ int Memorizacion_previa(Lista *lista, int *cant_repetidos, int *cargados){
         return MEMORIZACION_PARCIAL;
     }
     return MEMORIZACION_EXITOSA;
+}
+
+void Mostrar_Lista(Lista lista){
+    int cantidad_envios = lista.limite_superior, contador = 0;
+    if(cantidad_envios > -1){
+        for(contador; contador <= cantidad_envios; contador++){
+            printf("\nPosicion %d\n%s", contador, PANTALLA_BARRA);
+            imprimirEnvio(lista.arreglo[contador]);
+            if(contador % 5 == 0 && contador != 0){
+                system("pause");
+            }
+        }
+    }else{
+    printf("La lista esta vacia\n\n");
+    }
 }
 
 int main()
@@ -187,7 +203,7 @@ int main()
                     // Se captura codigo de envio
                     printf(
                            "%sAgregar un nuevo Envio\n%s\n"
-                           "Ingrese el CODIGO DE ENVIO >>\t\t\t",
+                           "Ingrese el CODIGO DE ENVIO >>\t\t",
                            PANTALLA_BARRA,PANTALLA_BARRA);
                     do {
                         fflush(stdin); scanf("%s",codigo_envio);
@@ -199,7 +215,7 @@ int main()
                     } while (!entrada_correcta);
 
                     // captura - dni de receptor
-                    printf("\nIngrese el DNI del RECEPTOR >>\t\t\t");
+                    printf("\nIngrese el DNI del RECEPTOR >>\t\t");
                     do {
                         fflush(stdin); scanf("%u",&dni_receptor);
                         //control
@@ -219,7 +235,7 @@ int main()
                     strcpy(domicilio_receptor,strupr(domicilio_receptor));
 
                     // captura - dni de remitente
-                    printf("\nIngrese el DNI del REMITENTE >>\t\t\t");
+                    printf("\nIngrese el DNI del REMITENTE >>\t\t");
                     do {
                         fflush(stdin); scanf("%u",&dni_remitente);
                         //control
@@ -235,7 +251,7 @@ int main()
                     strcpy(nombre_apellido_remitente,strupr(nombre_apellido_remitente));
 
                     // captura - fecha envio
-                    printf("\nIngrese la FECHA de ENVIO >>\t\t\t");
+                    printf("\nIngrese la FECHA de ENVIO >>\t\t");
                     do {
                         fflush(stdin); scanf("%s",fecha_envio);
                         //control
@@ -318,10 +334,19 @@ int main()
 
             system("pause"); break;
             }
+            case '4':{
+            system("cls");
+            printf(
+                           "%sMostrando Estructura\n%s\n",
+                           PANTALLA_BARRA,PANTALLA_BARRA);
+            Mostrar_Lista(lista_envios);
+            system("pause");
+            }
+
 
         }
 
-    } while (seleccion_usuario_menu_principal != '4');
+    } while (seleccion_usuario_menu_principal != '5');
 
 
     return 0;
