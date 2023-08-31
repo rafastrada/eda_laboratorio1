@@ -96,6 +96,7 @@ int Lista_baja(Lista *lista,char codigo_envio[], int (*manejo_confirmacion)(Envi
             // Actualiza el valor de salida
             salida = BAJA_EXITOSA;
         }
+        else salida = BAJA_CANCELADA;
     }
 
     return salida;

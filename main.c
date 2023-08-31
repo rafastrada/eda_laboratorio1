@@ -9,9 +9,10 @@
 #define PANTALLA_PRINCIPAL_OPERACIONES "\
 1. Buscar un Envio por su codigo\n\
 2. Agregar un nuevo Envio\n\
-3. Cargar Envios desde el archivo \"Envios.txt\"\n\
-4. Mostrar Estructura\n\
-5. Salir del programa\n"
+3. Eliminar un Envio\n\
+4. Cargar Envios desde el archivo \"Envios.txt\"\n\
+5. Mostrar Estructura\n\
+6. Salir del programa\n"
 
 
 // --- DEFINICION DE MACROS
@@ -92,6 +93,7 @@ int Memorizacion_previa(Lista *lista, int *cant_repetidos, int *cargados){
     return MEMORIZACION_EXITOSA;
 }
 
+//Mostrar Lista
 void Mostrar_Lista(Lista lista){
     int cantidad_envios = lista.limite_superior, contador = 0;
     if(cantidad_envios > -1){
@@ -105,6 +107,29 @@ void Mostrar_Lista(Lista lista){
     }else{
     printf("La lista esta vacia\n\n");
     }
+}
+
+// Funcion para manejar la confirmacion de una BAJA
+int confirmacionBaja(Envio envio) {
+    // La funcion devuelve 1 si se ha confirmado la BAJA
+    //                      0 si se ha cancelado
+
+    printf("\nSe ha encontrado el Envio solicitado, se imprime a continuacion...\n\n");
+    imprimirEnvio(envio);
+
+    printf("\nEsta seguro que quiere eliminarlo? [S/N] >> ");
+
+    //captura de la entrada del usuario
+    fflush(stdin);
+    char seleccion_usuario = getchar();
+
+    while (entradaDistintaSino(seleccion_usuario)) {
+        printf("\nDebe ingresar una entrada valida!\n[S/N] >> ");
+        fflush(stdin); seleccion_usuario = getchar();
+    }
+
+    if (seleccion_usuario == 's') return 1;
+    else return 0;
 }
 
 int main()
@@ -313,7 +338,7 @@ int main()
                     }
                 } while (seleccion_usuario_menu_alta == 's'); break; // termina el switch
             }
-            case '3':{
+            case '4':{
                 system("cls");
                 int resultado, repetidos = 0, cant, cargas;
                 resultado = Memorizacion_previa(&lista_envios, &repetidos, &cargas);
@@ -334,7 +359,59 @@ int main()
 
             system("pause"); break;
             }
-            case '4':{
+
+            // Dar de Baja un ENVIO
+            case '3': {
+                    // variable de seleccion de usuario
+                    char seleccion_usuario_menu_baja, codigo_envio[ENVIO_TAM_CODIGO_DE_ENVIO];
+                    int entrada_correcta;
+                    do {
+                        // Imprime pantalla
+                        system("cls");
+                        printf(PANTALLA_BARRA
+                               "Eliminar un ENVIO\n"
+                               PANTALLA_BARRA
+                               "Ingrese el CODIGO del ENVIO que desea eliminar >>\t");
+
+                        // Captura de codigo ingresado por usuario
+                        do {
+                            fflush(stdin); scanf("%s",codigo_envio);
+                            strcpy(codigo_envio,strupr(codigo_envio)); // pasa a mayusculas
+
+
+                            // Control de Codigo de envio correcto
+                            entrada_correcta = Envio_esCorrecto_codigo(codigo_envio);
+                            if (!entrada_correcta)
+                                printf("Debe ingresar un CODIGO valido! (7 caracteres alfanumericos) >> ");
+
+                        } while (!entrada_correcta);
+
+                        // Procedimiento de baja
+                        int resultado_baja = Lista_baja(&lista_envios,codigo_envio,confirmacionBaja);
+
+                        // Si se cancelo la baja, interrumpe directamente y vuelve al menu
+                        if (resultado_baja == BAJA_CANCELADA) break;
+
+                        // Caso exitoso
+                        else if (resultado_baja == BAJA_EXITOSA) {
+                            printf("\n\nEl ENVIO %s se elimino correctamente!\n"
+                                   "Desea eliminar otro envio? [S/N] >> ",codigo_envio);
+                        } else if (resultado_baja == BAJA_ERROR_NO_EXISTE) {// Caso que el ENVIO no exista
+                            printf("\n\nError! El ENVIO %s no existe!\n"
+                                   "Desea probar con un CODIGO diferente? [S/N] >> ",codigo_envio);
+                        }
+
+                    // Captura de respuesta del usuario
+                    fflush(stdin); seleccion_usuario_menu_baja = getchar();
+                    while (entradaDistintaSino(seleccion_usuario_menu_baja)) {
+                        printf("\nDebe ingresar una entrada valida!\n[S/N] >> ");
+                        fflush(stdin); seleccion_usuario_menu_baja = getchar();
+                    }
+
+                    } while (seleccion_usuario_menu_baja == 's'); break; // sale del switch
+            }
+
+            case '5':{
             system("cls");
             printf(
                            "%sMostrando Estructura\n%s\n",
@@ -342,11 +419,9 @@ int main()
             Mostrar_Lista(lista_envios);
             system("pause");
             }
-
-
         }
 
-    } while (seleccion_usuario_menu_principal != '5');
+    } while (seleccion_usuario_menu_principal != '6');
 
 
     return 0;
