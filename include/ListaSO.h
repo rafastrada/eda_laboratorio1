@@ -28,7 +28,7 @@ enum Lista_alta_retornos {ALTA_ERROR_CODIGO_EXISTENTE, ALTA_EXITOSA , ALTA_ERROR
 int Lista_alta(Lista *,Envio);
 
 // --- BAJA
-enum Lista_baja_retornos {BAJA_ERROR_NO_EXISTE, BAJA_EXITOSA};
+enum Lista_baja_retornos {BAJA_ERROR_NO_EXISTE, BAJA_EXITOSA, BAJA_CANCELADA};
 int Lista_baja(Lista *,char [],int (*)(Envio));
 
 // --- MODIFICAR
