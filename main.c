@@ -32,6 +32,8 @@
                                  (E).nombre_apellido_receptor,(E).domicilio_receptor,\
                                  (E).dni_remitente,(E).nombre_apellido_remitente,\
                                  (E).fecha_envio,(E).fecha_recepcion);
+ // control de lista vacia
+#define listaEstaVacia(L) ((L).limite_superior == -1)
 
 //memorizacion previa
 
@@ -272,6 +274,17 @@ int main()
                 int resultado_consulta, entrada_correcta;
                 Envio envio_consultado;
 
+                // Caso de lista vacia
+                if (listaEstaVacia(lista_envios)) {
+                    system("cls");
+                    printf(PANTALLA_BARRA
+                           "Buscar un ENVIO por su CODIGO\n"
+                           PANTALLA_BARRA
+                           "\nLa lista esta vacia!\n\n");
+                    system("pause");
+                    break; // sale al menu principal
+                }
+
                 do {
                     // Imprime pantalla
                     system("cls");
@@ -451,6 +464,18 @@ int main()
                 char seleccion_usuario_menu_modificacion, codigo_envio[ENVIO_TAM_CODIGO_DE_ENVIO];
                 int resultado_modificacion, entrada_correcta;
 
+
+                // Caso de lista vacia
+                if (listaEstaVacia(lista_envios)) {
+                    system("cls");
+                    printf(PANTALLA_BARRA
+                           "Modificar un ENVIO\n"
+                           PANTALLA_BARRA
+                           "\nLa lista esta vacia!\n\n");
+                    system("pause");
+                    break; // sale al menu principal
+                }
+
                 do {
                     // Imprime pantalla
                     system("cls");
@@ -524,6 +549,19 @@ int main()
                     // variable de seleccion de usuario
                     char seleccion_usuario_menu_baja, codigo_envio[ENVIO_TAM_CODIGO_DE_ENVIO];
                     int entrada_correcta;
+
+                    // Caso de lista vacia
+                    if (listaEstaVacia(lista_envios)) {
+                        system("cls");
+                        printf(PANTALLA_BARRA
+                               "Eliminar un ENVIO\n"
+                               PANTALLA_BARRA
+                               "\nLa lista esta vacia!\n\n");
+                        system("pause");
+                        break; // sale al menu principal
+                    }
+
+
                     do {
                         // Imprime pantalla
                         system("cls");
