@@ -39,7 +39,4 @@ int Lista_modificacion(Lista *,char [], int (*)(Envio *));
 enum Lista_consulta_retornos {CONSULTA_ERROR_NO_EXISTE, CONSULTA_EXITOSA};
 int Lista_consulta(Lista *, char [],Envio *);
 
-// Macro para Lista llena (recibe un puntero a la lista)
-#define Lista_estaLlena(L) ((L)->limite_superior >= (LISTA_TAM_ARREGLO - 1))
-
 #endif // LISTASO_H

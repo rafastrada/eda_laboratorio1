@@ -46,14 +46,13 @@ int Lista_alta(Lista *lista, Envio nuevo) {
     // Se procesa el ALTA
     if (exito_localizar == LOCALIZACION_ERROR_NO_EXISTE) {
         // Si la lista NO esta llena
-        if (!Lista_estaLlena(lista)) {
+        if (!(lista->limite_superior >= (LISTA_TAM_ARREGLO - 1))) {
             // Se actualiza el limite superior
             lista->limite_superior++;
 
             // Se desplazan los elementos hacia la derecha
             for (int i=lista->limite_superior; i > posicion_nuevo; i--) {
-                Envio temporal = lista->arreglo[i-1];
-                lista->arreglo[i] = temporal;
+                lista->arreglo[i] = lista->arreglo[i-1];
             }
 
             // Se agrega el nuevo elemento a la lista

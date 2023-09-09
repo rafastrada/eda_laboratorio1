@@ -42,12 +42,9 @@ Integrantes:
                                  (E).nombre_apellido_receptor,(E).domicilio_receptor,\
                                  (E).dni_remitente,(E).nombre_apellido_remitente,\
                                  (E).fecha_envio,(E).fecha_recepcion);
- // control de lista vacia
-#define listaEstaVacia(L) ((L).limite_superior == -1)
+
 
 //memorizacion previa
-
-
 enum Memorizacion_previa {ERROR_ABRIR_FICHERO, MEMORIZACION_EXITOSA, MEMORIZACION_PARCIAL};
 int Memorizacion_previa(Lista *lista, int *cant_repetidos, int *cargados){
     FILE *fichero;
@@ -85,13 +82,8 @@ int Memorizacion_previa(Lista *lista, int *cant_repetidos, int *cargados){
 
             resultado_alta = Lista_alta(lista, nuevo_envio);
 
-            if (resultado_alta == ALTA_ERROR_LISTA_LLENA){
-                fclose(fichero);
-                break;
-            }
-            if (resultado_alta == ALTA_ERROR_CODIGO_EXISTENTE){
-                repetidos ++;
-            }
+            if (resultado_alta == ALTA_ERROR_LISTA_LLENA) break;
+            if (resultado_alta == ALTA_ERROR_CODIGO_EXISTENTE) repetidos ++;
             indice ++;
         }
     }
@@ -285,7 +277,7 @@ int main()
                 Envio envio_consultado;
 
                 // Caso de lista vacia
-                if (listaEstaVacia(lista_envios)) {
+                if (lista_envios.limite_superior == -1) {
                     system("cls");
                     printf(PANTALLA_BARRA
                            "Buscar un ENVIO por su CODIGO\n"
@@ -476,7 +468,7 @@ int main()
 
 
                 // Caso de lista vacia
-                if (listaEstaVacia(lista_envios)) {
+                if (lista_envios.limite_superior == -1) {
                     system("cls");
                     printf(PANTALLA_BARRA
                            "Modificar un ENVIO\n"
@@ -561,7 +553,7 @@ int main()
                     int entrada_correcta;
 
                     // Caso de lista vacia
-                    if (listaEstaVacia(lista_envios)) {
+                    if (lista_envios.limite_superior == -1) {
                         system("cls");
                         printf(PANTALLA_BARRA
                                "Eliminar un ENVIO\n"
